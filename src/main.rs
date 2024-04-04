@@ -54,7 +54,7 @@ struct CliOpts {
     listen_port: u32,
     /// Authentication password. Probably better off passed in through a config file.
     #[clap(short = 's', long, value_parser, value_name = "SECRET")]
-    secret: String,
+    secret: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -309,12 +309,14 @@ async fn main() -> Result<()> {
     let bind_addr: SocketAddr = addr.parse()?;
     debug!("Bind address: {}", bind_addr);
 
-    let password = cli.secret.clone();
-
-    let server_options = ServerOptions {
+    let mut server_options = ServerOptions {
         addr: bind_addr,
-        authorization: Authorization::Basic(password),
+        authorization: Authorization::None,
     };
+
+    if let Some(ref pass) = cli.secret {
+        server_options.authorization = Authorization::Basic(pass.to_string());
+    }
 
     render_prometheus(
         server_options,

@@ -1,9 +1,9 @@
 [package]
 name = "ipfs_exporter"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
 description = "A fairly naive stats exporter from Kubo IPFS to Prometheus"
-author = "Matt Geddes"
+authors = [ "Matt Geddes" ]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
